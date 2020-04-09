@@ -11,3 +11,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.Question .questionNumber {
+  padding-right: 11px;
+}
