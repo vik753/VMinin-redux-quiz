@@ -3,11 +3,12 @@ import classes from "./ActiveQuiz.module.css";
 import AnswersList from "./AnswersList/AnswersList";
 
 const ActiveQuiz = (props) => {
+  // console.log(props)
   return (
     <div className={classes.ActiveQuiz}>
       <p className={classes.Question}>
         <span>
-          <strong className={classes.questionNumber}>2.</strong>
+          <strong>{props.answerNumber}.</strong>&nbsp;
           {props.question}
         </span>
         <small>
