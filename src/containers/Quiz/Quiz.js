@@ -37,6 +37,7 @@ class Quiz extends React.Component {
 
   onAnswerClickHandler = (answerId) => {
     if (this.state.answerState) {
+      // eslint-disable-next-line no-unused-vars
       const { key, value } = this.state.answerState;
       console.log(value);
       if (Object.values(this.state.answerState)[0] === "success") {
