@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import classes from "./QuizCreator.module.css";
+import axios from "axios";
 import Button from "../../components/UI/Button/Button";
 import {
   createControl,
@@ -44,6 +45,7 @@ class QuizCreator extends Component {
     isFormValid: false,
     formControls: createFormControls(),
   };
+
   submitHandler = (e) => {
     e.preventDefault();
   };
@@ -93,10 +95,23 @@ class QuizCreator extends Component {
     });
   };
 
-  createQuizHandler = (e) => {
+  createQuizHandler = async (e) => {
     e.preventDefault();
-    console.log(this.state.quiz);
-    //TODO: Server
+
+    try {
+      await axios.post(
+        `https://react-quiz-c7d29.firebaseio.com/quiz.json`,
+        this.state.quiz
+      );
+      this.setState({
+        quiz: [],
+        rightAnswerId: 1,
+        isFormValid: false,
+        formControls: createFormControls(),
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   changeHandler = (value, controlName) => {
@@ -142,6 +157,14 @@ class QuizCreator extends Component {
       rightAnswerId: +event.target.value,
     });
   };
+
+  componentDidMount() {
+    // axios
+    //   .get("https://react-quiz-c7d29.firebaseio.com/quiz.json")
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
+  }
 
   render() {
     const select = (
