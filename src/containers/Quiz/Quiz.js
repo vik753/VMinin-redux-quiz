@@ -2,6 +2,8 @@ import React from "react";
 import classes from "./Quiz.module.css";
 import ActiveQuiz from "./../../components/ActiveQuiz/ActiveQuiz";
 import FinishedQuiz from "../../components/FinishedQuiz/FinishedQuiz";
+import axios from "../../axios/axios-quiz";
+import Loader from "../../components/UI/Loader/Loader";
 
 class Quiz extends React.Component {
   state = {
@@ -9,30 +11,8 @@ class Quiz extends React.Component {
     isFinished: false,
     activeQuestion: 0,
     answerState: null,
-    quiz: [
-      {
-        question: "What color's the sky?",
-        rightAnswerId: 2,
-        id: 1,
-        answers: [
-          { text: "Black", id: 1 },
-          { text: "Blue", id: 2 },
-          { text: "Red", id: 3 },
-          { text: "Green", id: 4 },
-        ],
-      },
-      {
-        question: "How many colors in the rainbow?",
-        rightAnswerId: 1,
-        id: 2,
-        answers: [
-          { text: "Seven", id: 1 },
-          { text: "Five", id: 2 },
-          { text: "Four", id: 3 },
-          { text: "Twenty", id: 4 },
-        ],
-      },
-    ],
+    quiz: [],
+    loading: true,
   };
 
   onAnswerClickHandler = (answerId) => {
@@ -93,12 +73,30 @@ class Quiz extends React.Component {
     });
   };
 
+  async componentDidMount() {
+    try {
+      const response = await axios.get(
+        `/quiz/${this.props.match.params.id}.json`
+      );
+      const quiz = response.data;
+      this.setState(() => ({
+        quiz,
+        loading: false,
+      }));
+      console.log(this.state.quiz[this.state.activeQuestion].question);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   render() {
     return (
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
           <h1>Answer all questions, please:</h1>
-          {this.state.isFinished ? (
+          {this.state.loading ? (
+            <Loader />
+          ) : this.state.isFinished ? (
             <FinishedQuiz
               results={this.state.results}
               quiz={this.state.quiz}

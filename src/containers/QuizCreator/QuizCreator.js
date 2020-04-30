@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import classes from "./QuizCreator.module.css";
-import axios from "axios";
+import axios from "../../axios/axios-quiz";
 import Button from "../../components/UI/Button/Button";
 import {
   createControl,
@@ -99,16 +99,14 @@ class QuizCreator extends Component {
     e.preventDefault();
 
     try {
-      await axios.post(
-        `https://react-quiz-c7d29.firebaseio.com/quiz.json`,
-        this.state.quiz
-      );
+      await axios.post(`/quiz.json`, this.state.quiz);
       this.setState({
         quiz: [],
         rightAnswerId: 1,
         isFormValid: false,
         formControls: createFormControls(),
       });
+      this.props.history.push("/");
     } catch (err) {
       console.log(err);
     }
