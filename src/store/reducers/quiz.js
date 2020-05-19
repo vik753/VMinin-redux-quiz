@@ -74,3 +74,4 @@ export default function quizReducer(state = initialState, action) {
       return state;
   }
 }
+
